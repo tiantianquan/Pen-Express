@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="PenApp">
+<head>
+    <title>Pen</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css"/>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <title>Examples</title>
+    <style type="text/css">
+        /**{padding:0;margin:0;}*/
+        /*html{border-top:10px #1abf89 solid;}*/
+        /*body{width:800px;margin:0 auto;padding:5% 20px 20px;font-family:Palatino, Optima, Georgia, serif;}*/
+        /*@media all and (max-width:1024px){ body, pre a{width:60%;} }*/
+        /*small{color:#999;}*/
+        #toolbar{margin-bottom:1em;position:fixed;left:20px;margin-top:5px;}
+        #toolbar [class^="icon-"]:before, #toolbar [class*=" icon-"]:before{font-family:'pen'}
+        #mode{color:#1abf89;;cursor:pointer;}
+        #mode.disabled{color:#666;}
+        #mode:before{content: '\e813';}
+        #hinted{color:#1abf89;cursor:pointer;}
+        #hinted.disabled{color:#666;}
+        #hinted:before{content: '\e816';}
+
+        #fork{position:fixed;right:0;top:0;}
+    </style>
+    <link rel="stylesheet" href="/javascripts/penSrc/pen.css">
+    <script src="/javascripts/lib/jquery-1.11.0.min.js"></script>
+    <script src="/javascripts/lib/angular.js"></script>
+    <script src="/javascripts/lib/angular-sanitize.js"></script>
+    <script src="/javascripts/lib/angular-contenteditable.js"></script>
+    <script src="/javascripts/app.js"></script>
+</head>
+<body ng-controller='PenCtrl' ng-keyup="postData()" ng-init="getData()">
+<nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header"><a href="#/pen" class="navbar-brand"></a></div>
+</nav>
+<div class="wrapper container">
+    <div class="row">
+        <div class="edit-area col-md-6 col-md-offset-3">
+            <!--<div class="title" data-toggle="pen" contenteditable strip-br="true" select-non-editable="true" spellcheck="false" ng-model="article.title">-->
+                <!--&lt;!&ndash; content &ndash;&gt;-->
+            <!--</div>-->
+            <br>
+            <div class="content" data-toggle="pen" contenteditable strip-br="true" select-non-editable="true" spellcheck="false" ng-model="article.content">
+                <!-- content -->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="javascripts/penSrc/pen.js"></script>
+<script type="text/javascript">
+
+    // config
+    var options = {
+        editor: document.querySelector('[data-toggle="pen"]'),
+        debug: true
+    };
+
+    // create editor
+    var pen = new Pen(options);
+
+
+    // toggle editor mode
+    document.querySelector('#mode').addEventListener('click', function() {
+        var text = this.textContent;
+
+        if(this.classList.contains('disabled')) {
+            this.classList.remove('disabled');
+            pen.rebuild();
+        } else {
+            this.classList.add('disabled');
+            pen.destroy();
+        }
+    });
+
+    // toggle editor mode
+    document.querySelector('#hinted').addEventListener('click', function() {
+        var pen = document.querySelector('.pen')
+
+        if(pen.classList.contains('hinted')) {
+            pen.classList.remove('hinted');
+            this.classList.add('disabled');
+        } else {
+            pen.classList.add('hinted');
+            this.classList.remove('disabled');
+        }
+    });
+</script>
+</body>
+</html>
